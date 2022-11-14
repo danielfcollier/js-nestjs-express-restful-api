@@ -7,12 +7,7 @@ import { EventController } from './event/event.controller';
 
 @Module({
   imports: [],
-  controllers: [
-    AppController,
-    ResetController,
-    BalanceController,
-    EventController,
-  ],
+  controllers: [AppController, ResetController, BalanceController, EventController],
   providers: [AppService],
 })
 export class AppModule {}

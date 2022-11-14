@@ -12,10 +12,7 @@ class EventDto {
 @Controller('event')
 export class EventController {
   @Post()
-  postEvent(
-    @Body() body: EventDto,
-    @Res({ passthrough: true }) res: Response,
-  ): void {
+  postEvent(@Body() body: EventDto, @Res({ passthrough: true }) res: Response): void {
     try {
       const result = Operation.handler(body);
 

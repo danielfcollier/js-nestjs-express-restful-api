@@ -6,10 +6,7 @@ import Db from '../lib/Db';
 @Controller('balance')
 export class BalanceController {
   @Get()
-  getBalance(
-    @Query() query: { account_id: string },
-    @Res({ passthrough: true }) res: Response,
-  ): void {
+  getBalance(@Query() query: { account_id: string }, @Res({ passthrough: true }) res: Response): void {
     const { account_id } = query;
     const data = Db.read(account_id);
     if (data) {
