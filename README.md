@@ -60,7 +60,7 @@ If tests are passing, the CI with GitHub Actions pushes the changes to a product
 
 ## References
 
-### Express.js API documentation:
+### Nest.js documentation:
 
 https://docs.nestjs.com/
 
