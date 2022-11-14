@@ -45,10 +45,7 @@ class Db {
     }
 
     const updatedAccount = { ...account, balance: account.balance + amount };
-    const updatedData = [
-      ...data.filter((element) => element.id !== account.id),
-      updatedAccount,
-    ];
+    const updatedData = [...data.filter((element) => element.id !== account.id), updatedAccount];
 
     global.dbData = updatedData;
 
