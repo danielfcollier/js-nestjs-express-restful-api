@@ -1,4 +1,4 @@
-import fs from 'fs';
+import * as fs from 'fs';
 import { join } from 'path';
 
 class Db {
@@ -6,53 +6,61 @@ class Db {
   static dirPath = join(__dirname, '..', 'db');
   static filePath = join(__dirname, '..', 'db', this.DB_FILE);
 
-  private static async createFile() {
-    if (true) {
-      return;
-    }
+  private static  createFile() {
     const checkIfFileOrDirectoryExists = (path: string): boolean => {
       const result = fs.existsSync(path);
-      console.log({ result });
       return result;
     };
 
     if (!checkIfFileOrDirectoryExists(this.filePath)) {
+      console.log({ message: 'Db file created!' });
       fs.mkdirSync(this.dirPath);
     }
 
-    return await fs.promises.writeFile(this.filePath, '');
+    return  fs.promises.writeFile(
+      this.filePath,
+      '[{"id":"100","balance":10}]',
+      'utf-8',
+    );
   }
 
-  private static async readAll() {
-    await this.createFile();
-    const content = await fs.promises.readFile(this.filePath);
+  private static  readAll() {
+     this.createFile();
+    const content =  fs.promises.readFile(this.filePath);
     try {
-      return JSON.parse(content.toString());
+      const result = JSON.parse(content.toString());
+      console.log({ result, id: result[0].id });
+      return result;
     } catch {
       return null;
     }
   }
 
-  static async reset() {
-    console.log({ db: this.filePath, dir: __dirname });
-    await this.createFile();
-    // await fs.promises.writeFile(this.filePath, '');
+  static reset() {
+    //  this.createFile();
+    global.dbFile = '';
+    //  fs.promises.writeFile(this.filePath, JSON.stringify('')), 'utf-8';
   }
 
-  static async create(account) {
-    console.log({ db: this.filePath });
-    const data = await this.readAll();
+  static  create(account) {
+    // const data =  this.readAll();
+    const data = global.dbFile;
     if (data) {
       data.push[account];
     }
 
     const result = data ? data : [account];
 
-    await fs.promises.writeFile(this.filePath, JSON.stringify(result));
+    console.log({ file: this.filePath, updatedData: JSON.stringify(result) });
+
+    global.dbFile = result;
+    //  fs.promises.writeFile(this.filePath, JSON.stringify(result), 'utf-8');
   }
 
-  static async read(id) {
-    const data = await this.readAll();
+  static  read(id) {
+    // const data =  this.readAll();
+    const data = global.dbFile;
+    console.log({ data, id });
     const getElement = () => {
       const filteredData = data.filter((element) => element.id === id);
       return filteredData.length === 1 ? filteredData[0] : null;
@@ -62,16 +70,17 @@ class Db {
     return result;
   }
 
-  static async increment(account, amount) {
-    return await this.update(account, amount);
+  static  increment(account, amount) {
+    return  this.update(account, amount);
   }
 
-  static async decrement(account, amount) {
-    return await this.update(account, -amount);
+  static  decrement(account, amount) {
+    return  this.update(account, -amount);
   }
 
-  private static async update(account, amount) {
-    const data = await this.readAll();
+  private static  update(account, amount) {
+    // const data =  this.readAll();
+    const data = global.dbFile;
 
     if (!data) {
       throw new Error();
@@ -83,7 +92,19 @@ class Db {
       updatedAccount,
     ];
 
-    await fs.promises.writeFile(this.filePath, JSON.stringify(updatedData));
+    console.log({
+      file: this.filePath,
+      updatedData: JSON.stringify(updatedData),
+      fs: global.dbFile,
+    });
+
+    //  fs.promises.writeFile(
+    //   this.filePath,
+    //   JSON.stringify(updatedData),
+    //   'utf-8',
+    // );
+
+    global.dbFile = updatedAccount;
 
     return updatedAccount;
   }
