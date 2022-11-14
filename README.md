@@ -2,6 +2,12 @@
 
 Requirements: Node.js + Nest.js
 
+## Add a New Controller with:
+
+```bash
+npx nest g controller <route>
+```
+
 ## Table of Contents
 
 - [Demo Version](#demo-version)
@@ -40,6 +46,8 @@ docker run -m 512m --memory-reservation=256m -p 3000:3000 api-rest
 
 ```bash
 npm test
+npm run test:cov
+npm run test:e2e
 ```
 
 ## CI-CD
