@@ -1,8 +1,8 @@
 {
-  "name": "nest-typescript-starter",
+  "name": "ts-nestjs-express-api-rest",
   "private": true,
   "version": "1.0.0",
-  "description": "Nest TypeScript starter repository",
+  "description": "REST API with Nest.js",
   "license": "MIT",
   "scripts": {
     "build": "nest build",
