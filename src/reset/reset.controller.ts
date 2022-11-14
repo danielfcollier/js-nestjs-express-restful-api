@@ -6,15 +6,12 @@ import Db from '../lib/Db';
 @Controller('reset')
 export class ResetController {
   @Post()
-  async postReset(
-    _,
-    @Res({ passthrough: true }) res: Response,
-  ): Promise<Response> {
+  postReset(_, @Res({ passthrough: true }) res: Response): void {
     try {
-      await Db.reset();
-      return res.status(HttpStatus.OK).send('OK');
+      Db.reset();
+      res.status(HttpStatus.OK).send('OK');
     } catch {
-      return res.status(HttpStatus.NOT_FOUND).send('0');
+      res.status(HttpStatus.NOT_FOUND).send('0');
     }
   }
 }
