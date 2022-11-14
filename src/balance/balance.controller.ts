@@ -11,7 +11,6 @@ export class BalanceController {
     const data = Db.read(account_id);
     if (data) {
       res.status(HttpStatus.OK).json(data.balance);
-      res.status(200);
     } else {
       res.status(HttpStatus.NOT_FOUND).send('0');
     }
