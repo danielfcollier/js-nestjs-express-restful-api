@@ -15,8 +15,14 @@ describe('AppController (e2e): Specification to work with a local database varia
     await app.init();
   });
 
+  afterAll(async () => {
+    await app.close();
+  });
+
   it('/ (GET)', async () => {
-    await request(app.getHttpServer()).get('/').expect(HttpStatus.OK).expect('Hello World!');
+    const response = request(app.getHttpServer()).get('/');
+
+    await response.expect(HttpStatus.OK).expect('Hello World!');
   });
 
   it('/reset - Reset state before starting tests', async () => {
@@ -25,8 +31,9 @@ describe('AppController (e2e): Specification to work with a local database varia
       status: HttpStatus.OK,
       content: 'OK',
     };
+    const response = request(app.getHttpServer()).post(endpoint);
 
-    await request(app.getHttpServer()).post(endpoint).expect(expect.status).expect(expect.content);
+    await response.expect(expect.status).expect(expect.content);
   });
 
   it('/balance - Get balance for non-existing account', async () => {
@@ -35,8 +42,9 @@ describe('AppController (e2e): Specification to work with a local database varia
       status: HttpStatus.NOT_FOUND,
       content: '0',
     };
+    const response = request(app.getHttpServer()).get(endpoint);
 
-    await request(app.getHttpServer()).get(endpoint).expect(expect.status).expect(expect.content);
+    await response.expect(expect.status).expect(expect.content);
   });
 
   it('/event - Create account with initial balance', async () => {
@@ -48,8 +56,9 @@ describe('AppController (e2e): Specification to work with a local database varia
       status: HttpStatus.CREATED,
       content: { destination: { id: '100', balance: 10 } },
     };
+    const response = request(app.getHttpServer()).post(endpoint).send(req.body);
 
-    await request(app.getHttpServer()).post(endpoint).send(req.body).expect(expect.status).expect(expect.content);
+    await response.expect(expect.status).expect(expect.content);
   });
 
   it('/event - Deposit into existing account', async () => {
@@ -61,8 +70,9 @@ describe('AppController (e2e): Specification to work with a local database varia
       status: HttpStatus.CREATED,
       content: { destination: { id: '100', balance: 20 } },
     };
+    const response = request(app.getHttpServer()).post(endpoint).send(req.body);
 
-    await request(app.getHttpServer()).post(endpoint).send(req.body).expect(expect.status).expect(expect.content);
+    await response.expect(expect.status).expect(expect.content);
   });
 
   it('/balance - Get balance for existing account', async () => {
@@ -71,8 +81,9 @@ describe('AppController (e2e): Specification to work with a local database varia
       status: HttpStatus.OK,
       content: '20',
     };
+    const response = request(app.getHttpServer()).get(endpoint);
 
-    await request(app.getHttpServer()).get(endpoint).expect(expect.status).expect(expect.content);
+    await response.expect(expect.status).expect(expect.content);
   });
 
   it('/event - Withdraw from non-existing account', async () => {
@@ -84,8 +95,9 @@ describe('AppController (e2e): Specification to work with a local database varia
       status: HttpStatus.NOT_FOUND,
       content: '0',
     };
+    const response = request(app.getHttpServer()).post(endpoint).send(req.body);
 
-    await request(app.getHttpServer()).post(endpoint).send(req.body).expect(expect.status).expect(expect.content);
+    await response.expect(expect.status).expect(expect.content);
   });
 
   it('/event - Withdraw from existing account', async () => {
@@ -97,8 +109,9 @@ describe('AppController (e2e): Specification to work with a local database varia
       status: HttpStatus.CREATED,
       content: { origin: { id: '100', balance: 15 } },
     };
+    const response = request(app.getHttpServer()).post(endpoint).send(req.body);
 
-    await request(app.getHttpServer()).post(endpoint).send(req.body).expect(expect.status).expect(expect.content);
+    await response.expect(expect.status).expect(expect.content);
   });
 
   it('/event - Transfer from existing account', async () => {
@@ -113,8 +126,9 @@ describe('AppController (e2e): Specification to work with a local database varia
         destination: { id: '300', balance: 15 },
       },
     };
+    const response = request(app.getHttpServer()).post(endpoint).send(req.body);
 
-    await request(app.getHttpServer()).post(endpoint).send(req.body).expect(expect.status).expect(expect.content);
+    await response.expect(expect.status).expect(expect.content);
   });
 
   it('/event - Transfer from non-existing account', async () => {
@@ -126,7 +140,8 @@ describe('AppController (e2e): Specification to work with a local database varia
       status: HttpStatus.NOT_FOUND,
       content: '0',
     };
+    const response = request(app.getHttpServer()).post(endpoint).send(req.body);
 
-    await request(app.getHttpServer()).post(endpoint).send(req.body).expect(expect.status).expect(expect.content);
+    await response.expect(expect.status).expect(expect.content);
   });
 });
