@@ -7,41 +7,41 @@ const eventType = {
 };
 
 class Operation {
-  static async handler(data) {
+  static handler(data) {
     switch (data.type) {
       case eventType.deposit:
-        return await this.deposit(data);
+        return this.deposit(data);
       case eventType.transfer:
-        return await this.transfer(data);
+        return this.transfer(data);
       case eventType.withdraw:
-        return await this.withdraw(data);
+        return this.withdraw(data);
       default:
         throw new Error();
     }
   }
 
-  private static async deposit(data) {
+  private static deposit(data) {
     const id = data.destination;
     if (!id) {
       throw new Error();
     }
 
-    const account = await Db.read(id);
+    const account = Db.read(id);
     if (!account) {
       const newAccount = {
         id,
         balance: data.amount,
       };
-      await Db.create(newAccount);
+      Db.create(newAccount);
 
       return { destination: newAccount };
     }
 
-    const updatedAccount = await Db.increment(account, data.amount);
+    const updatedAccount = Db.increment(account, data.amount);
     return { destination: updatedAccount };
   }
 
-  private static async transfer(data) {
+  private static transfer(data) {
     const idOrigin = data.origin;
     const idDestination = data.destination;
 
@@ -49,24 +49,28 @@ class Operation {
       throw new Error();
     }
 
-    const origin = await this.withdraw(data);
-    const destination = await this.deposit(data);
+    const origin = this.withdraw(data);
+    if (origin) {
+      const destination = this.deposit(data);
 
-    return { origin: origin.origin, destination: destination.destination };
+      return { origin: origin.origin, destination: destination.destination };
+    } else {
+      throw new Error();
+    }
   }
 
-  private static async withdraw(data) {
+  private static withdraw(data) {
     const id = data.origin;
     if (!id) {
       throw new Error();
     }
 
-    const account = await Db.read(id);
+    const account = Db.read(id);
     if (!account) {
       throw new Error();
     }
 
-    const updatedAccount = await Db.decrement(account, data.amount);
+    const updatedAccount = Db.decrement(account, data.amount);
     return { origin: updatedAccount };
   }
 }
