@@ -1,13 +1,8 @@
 import { Controller, Post, Body, Res, HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
 
+import EventDto from './event.dto';
 import Operation from '../lib/Operation';
-class EventDto {
-  origin?: string;
-  destination?: string;
-  type: string;
-  amount: number;
-}
 
 @Controller('event')
 export class EventController {
