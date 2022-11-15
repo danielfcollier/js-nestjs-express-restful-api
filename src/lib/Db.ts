@@ -1,16 +1,18 @@
+import AccountDto from './account.dto';
+
 class Db {
-  private static readAll() {
+  private static readAll(): AccountDto[] {
     return global.dbData;
   }
 
   static reset() {
-    global.dbData = '';
+    global.dbData = [];
   }
 
-  static create(account) {
+  static create(account: AccountDto) {
     const data = this.readAll();
-    if (data) {
-      data.push[account];
+    if (data.length === 0) {
+      data.push(account);
     }
 
     const result = data ? data : [account];
@@ -18,7 +20,7 @@ class Db {
     global.dbData = result;
   }
 
-  static read(id) {
+  static read(id: string) {
     const data = this.readAll();
     const getElement = () => {
       const filteredData = data.filter((element) => element.id === id);
@@ -29,15 +31,15 @@ class Db {
     return result;
   }
 
-  static increment(account, amount) {
+  static increment(account: AccountDto, amount: number) {
     return this.update(account, amount);
   }
 
-  static decrement(account, amount) {
+  static decrement(account: AccountDto, amount: number) {
     return this.update(account, -amount);
   }
 
-  private static update(account, amount) {
+  private static update(account: AccountDto, amount: number) {
     const data = this.readAll();
 
     if (!data) {

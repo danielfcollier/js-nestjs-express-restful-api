@@ -1,7 +1,9 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
-global.dbData = '';
+import AccountDto from './lib/account.dto';
+
+global.dbData = [] as AccountDto[];
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

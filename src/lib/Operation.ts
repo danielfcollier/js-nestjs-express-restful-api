@@ -1,26 +1,22 @@
 import Db from './Db';
-
-const eventType = {
-  deposit: 'deposit',
-  transfer: 'transfer',
-  withdraw: 'withdraw',
-};
+import EventDto from '../event/event.dto';
+import EventType from '../event/event.enum';
 
 class Operation {
-  static handler(data) {
+  static handler(data: EventDto) {
     switch (data.type) {
-      case eventType.deposit:
+      case EventType.Deposit:
         return this.deposit(data);
-      case eventType.transfer:
+      case EventType.Transfer:
         return this.transfer(data);
-      case eventType.withdraw:
+      case EventType.Withdraw:
         return this.withdraw(data);
       default:
         throw new Error();
     }
   }
 
-  private static deposit(data) {
+  private static deposit(data: EventDto) {
     const id = data.destination;
     if (!id) {
       throw new Error();
@@ -41,7 +37,7 @@ class Operation {
     return { destination: updatedAccount };
   }
 
-  private static transfer(data) {
+  private static transfer(data: EventDto) {
     const idOrigin = data.origin;
     const idDestination = data.destination;
 
@@ -59,7 +55,7 @@ class Operation {
     }
   }
 
-  private static withdraw(data) {
+  private static withdraw(data: EventDto) {
     const id = data.origin;
     if (!id) {
       throw new Error();
