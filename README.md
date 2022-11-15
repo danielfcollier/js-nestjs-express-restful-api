@@ -2,12 +2,6 @@
 
 Requirements: Node.js + Nest.js
 
-## Add a New Controller with:
-
-```bash
-npx nest g controller <route>
-```
-
 ## Table of Contents
 
 - [Demo Version](#demo-version)
@@ -65,6 +59,14 @@ act -j tests
 ### Deployment to Production Branch
 
 If tests are passing, the CI with GitHub Actions pushes the changes to a production branch (`prod`).
+
+## Configurations
+
+### Add a New Controller with:
+
+```bash
+npx nest g controller <route>
+```
 
 ## References
 
