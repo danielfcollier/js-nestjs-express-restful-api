@@ -5,6 +5,7 @@ import { INestApplication, HttpStatus } from '@nestjs/common';
 
 describe('AppController (e2e): Specification to work with a local database variable', () => {
   let app: INestApplication;
+  let server: INestApplication;
 
   beforeAll(async () => {
     const moduleFixture = await Test.createTestingModule({
@@ -13,6 +14,8 @@ describe('AppController (e2e): Specification to work with a local database varia
 
     app = moduleFixture.createNestApplication();
     await app.init();
+
+    server = app.getHttpServer();
   });
 
   afterAll(async () => {
@@ -20,7 +23,7 @@ describe('AppController (e2e): Specification to work with a local database varia
   });
 
   it('/ (GET)', async () => {
-    const response = request(app.getHttpServer()).get('/');
+    const response = request(server).get('/');
 
     await response.expect(HttpStatus.OK).expect('Hello World!');
   });
@@ -31,7 +34,7 @@ describe('AppController (e2e): Specification to work with a local database varia
       status: HttpStatus.OK,
       content: 'OK',
     };
-    const response = request(app.getHttpServer()).post(endpoint);
+    const response = request(server).post(endpoint);
 
     await response.expect(expect.status).expect(expect.content);
   });
@@ -42,7 +45,7 @@ describe('AppController (e2e): Specification to work with a local database varia
       status: HttpStatus.NOT_FOUND,
       content: '0',
     };
-    const response = request(app.getHttpServer()).get(endpoint);
+    const response = request(server).get(endpoint);
 
     await response.expect(expect.status).expect(expect.content);
   });
@@ -56,7 +59,7 @@ describe('AppController (e2e): Specification to work with a local database varia
       status: HttpStatus.CREATED,
       content: { destination: { id: '100', balance: 10 } },
     };
-    const response = request(app.getHttpServer()).post(endpoint).send(req.body);
+    const response = request(server).post(endpoint).send(req.body);
 
     await response.expect(expect.status).expect(expect.content);
   });
@@ -70,7 +73,7 @@ describe('AppController (e2e): Specification to work with a local database varia
       status: HttpStatus.CREATED,
       content: { destination: { id: '100', balance: 20 } },
     };
-    const response = request(app.getHttpServer()).post(endpoint).send(req.body);
+    const response = request(server).post(endpoint).send(req.body);
 
     await response.expect(expect.status).expect(expect.content);
   });
@@ -81,7 +84,7 @@ describe('AppController (e2e): Specification to work with a local database varia
       status: HttpStatus.OK,
       content: '20',
     };
-    const response = request(app.getHttpServer()).get(endpoint);
+    const response = request(server).get(endpoint);
 
     await response.expect(expect.status).expect(expect.content);
   });
@@ -95,7 +98,7 @@ describe('AppController (e2e): Specification to work with a local database varia
       status: HttpStatus.NOT_FOUND,
       content: '0',
     };
-    const response = request(app.getHttpServer()).post(endpoint).send(req.body);
+    const response = request(server).post(endpoint).send(req.body);
 
     await response.expect(expect.status).expect(expect.content);
   });
@@ -109,7 +112,7 @@ describe('AppController (e2e): Specification to work with a local database varia
       status: HttpStatus.CREATED,
       content: { origin: { id: '100', balance: 15 } },
     };
-    const response = request(app.getHttpServer()).post(endpoint).send(req.body);
+    const response = request(server).post(endpoint).send(req.body);
 
     await response.expect(expect.status).expect(expect.content);
   });
@@ -126,7 +129,7 @@ describe('AppController (e2e): Specification to work with a local database varia
         destination: { id: '300', balance: 15 },
       },
     };
-    const response = request(app.getHttpServer()).post(endpoint).send(req.body);
+    const response = request(server).post(endpoint).send(req.body);
 
     await response.expect(expect.status).expect(expect.content);
   });
@@ -140,7 +143,7 @@ describe('AppController (e2e): Specification to work with a local database varia
       status: HttpStatus.NOT_FOUND,
       content: '0',
     };
-    const response = request(app.getHttpServer()).post(endpoint).send(req.body);
+    const response = request(server).post(endpoint).send(req.body);
 
     await response.expect(expect.status).expect(expect.content);
   });
