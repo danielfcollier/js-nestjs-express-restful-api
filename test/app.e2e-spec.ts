@@ -40,7 +40,7 @@ describe('AppController (e2e): Specification to work with a local database varia
   });
 
   it('/balance - Get balance for non-existing account', async () => {
-    const endpoint = '/balance';
+    const endpoint = '/balance?account_id=1234';
     const expect = {
       status: HttpStatus.NOT_FOUND,
       content: '0',
