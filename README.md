@@ -84,6 +84,4 @@ https://github.com/vercel/next.js/tree/canary/examples/with-docker
 
 ### Test GitHub Actions Locally
 
-https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
-
 https://github.com/nektos/act
